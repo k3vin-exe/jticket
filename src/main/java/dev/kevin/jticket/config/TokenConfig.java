@@ -2,11 +2,15 @@ package dev.kevin.jticket.config;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import dev.kevin.jticket.entity.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import dev.kevin.jticket.config.JWTUserData;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @Component
 public class TokenConfig {
@@ -25,4 +29,21 @@ public class TokenConfig {
                 .sign(algorithm);
     }
 
+    public Optional<JWTUserData> validateToken(String token) {
+        try {
+
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+
+            DecodedJWT decodedJWT = JWT.require(algorithm)
+                    .build().verify(token);
+
+            return Optional.of(JWTUserData.builder()
+                    .userId(decodedJWT.getClaim("userId").asLong())
+                    .email(decodedJWT.getSubject())
+                    .build());
+
+        } catch (JWTVerificationException ex) {
+            return Optional.empty();
+        }
+    }
 }
