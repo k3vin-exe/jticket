@@ -1,4 +1,4 @@
-package dev.kevin.jticket.dto.request;
+package dev.kevin.jticket.dto.auth;
 
 import jakarta.validation.constraints.NotEmpty;
 

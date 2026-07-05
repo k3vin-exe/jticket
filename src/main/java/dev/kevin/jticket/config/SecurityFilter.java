@@ -2,6 +2,7 @@ package dev.kevin.jticket.config;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.util.Strings;
@@ -24,21 +25,29 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authorizedHeader = request.getHeader("Authorization");
+        String token = null;
 
-        if (Strings.isNotEmpty(authorizedHeader) && authorizedHeader.startsWith("Bearer ")) {
-            String token = authorizedHeader.substring("Bearer ".length());
-            Optional<JWTUserData> optUser = tokenConfig.validateToken(token);
-            if (optUser.isPresent()) {
-
-                JWTUserData userData = optUser.get();
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userData, null, null);
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if("jwt".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                    break;
+                }
             }
-            filterChain.doFilter(request, response);
-        } else {
-            filterChain.doFilter(request, response);
+
+            if (Strings.isNotEmpty(token)) {
+                Optional<JWTUserData> optUser = tokenConfig.validateToken(token);
+
+                if (optUser.isPresent()) {
+
+                    JWTUserData userData = optUser.get();
+
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userData, null, null);
+
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            }
         }
+        filterChain.doFilter(request, response);
     }
 }

@@ -17,6 +17,7 @@ public class Chamado {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String titulo;
+    @Column(columnDefinition = "TEXT")
     private String descricao;
     private LocalDateTime dataAbertura;
     @Enumerated(EnumType.STRING)

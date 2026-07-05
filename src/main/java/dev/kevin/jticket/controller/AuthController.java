@@ -1,25 +1,23 @@
 package dev.kevin.jticket.controller;
 
 import dev.kevin.jticket.config.TokenConfig;
-import dev.kevin.jticket.dto.request.LoginRequest;
-import dev.kevin.jticket.dto.request.RegisterUserRequest;
-import dev.kevin.jticket.dto.response.LoginResponse;
-import dev.kevin.jticket.dto.response.RegisterUserResponse;
+import dev.kevin.jticket.dto.auth.LoginRequest;
+import dev.kevin.jticket.dto.auth.RegisterUserRequest;
+import dev.kevin.jticket.dto.auth.LoginResponse;
+import dev.kevin.jticket.dto.auth.RegisterUserResponse;
 import dev.kevin.jticket.entity.User;
 import dev.kevin.jticket.repository.UserRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequestMapping("/auth")
 public class AuthController {
 
@@ -35,16 +33,35 @@ public class AuthController {
         this.tokenConfig = tokenConfig;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
 
-        UsernamePasswordAuthenticationToken userAndPass = new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.senha());
+    @PostMapping("/login")
+    public String login(
+                @RequestParam String email,
+                @RequestParam String senha,
+                HttpServletResponse response
+            ) {
+
+        UsernamePasswordAuthenticationToken userAndPass = new UsernamePasswordAuthenticationToken(email, senha);
         Authentication authentication = authenticationManager.authenticate(userAndPass);
 
         User user = (User) authentication.getPrincipal();
         String token = tokenConfig.generateToken(user);
 
-        return ResponseEntity.ok(new LoginResponse(token));
+        ResponseCookie cookie = ResponseCookie.from("jwt", token)
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(60 * 60)
+                .sameSite("Lax")
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+
+        return "redirect:/chamados";
     }
 
 
