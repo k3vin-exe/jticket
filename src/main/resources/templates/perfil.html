@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-5">
+
+    <div class="card shadow-sm">
+
+        <div class="card-header bg-dark text-white">
+            Meu Perfil
+        </div>
+
+        <div class="card-body">
+
+            <p><strong>ID:</strong> <span th:text="${usuario.userId}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${usuario.email}"></span></p>
+
+        </div>
+
+        <div class="card-footer">
+            <a href="/chamados" class="btn btn-secondary">Voltar</a>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

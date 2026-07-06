@@ -16,7 +16,7 @@
                 </a>
                 <div class="dropdown">
                     <a style="color: white;" class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                        Usuário
+                        <span th:text="${usuarioLogado != null ? usuarioLogado.email : 'Usuário'}"></span>
                     </a>
         
                     <ul class="dropdown-menu dropdown-menu-end">
