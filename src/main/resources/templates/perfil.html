@@ -7,29 +7,61 @@
 </head>
 
 <body class="bg-light">
+    <header>
+        <nav class="navbar navbar-dark bg-dark">
+            <div class="container-md">
+                <a href="/" class="navbar-brand">
+                    <img th:src="@{/jticketLogo.png}" alt="Logo" style="height: 60px;">
+                </a>
+                <div class="dropdown">
+                    <a style="color: white;" class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <span th:text="${usuarioLogado != null ? usuarioLogado.nome : 'Usuário'}"></span>
+                    </a>
+        
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="/perfil">Ver meu perfil</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <form method="post" action="/logout">
+                                <button class="dropdown-item">Sair</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
 
-<div class="container mt-5">
-
-    <div class="card shadow-sm">
-
-        <div class="card-header bg-dark text-white">
-            Meu Perfil
+    <main>
+        <div class="container mt-5">
+        
+            <div class="card shadow-sm">
+        
+                <div class="card-header bg-dark text-white">
+                    Meu Perfil
+                </div>
+        
+                <div class="card-body">
+        
+                    <p><strong>ID:</strong> <span th:text="${usuario.id}"></span></p>
+                    <p><strong>Nome:</strong> <span th:text="${usuario.nome}"></span></p>
+                    <p><strong>Email:</strong> <span th:text="${usuario.email}"></span></p>
+                    <p><strong>Cargo:</strong> <span th:text="${usuario.cargo}"></span></p>
+                    <p><strong>Telefone:</strong> <span th:text="${usuario.telefone}"></span></p>
+                    <p><strong>Tipo de usuário:</strong> <span th:text="${usuario.tipo_usuario}"></span></p>
+        
+                </div>
+        
+                <div class="card-footer">
+                    <a href="/chamados" class="btn btn-secondary">Voltar</a>
+                </div>
+        
+            </div>
+        
         </div>
-
-        <div class="card-body">
-
-            <p><strong>ID:</strong> <span th:text="${usuario.userId}"></span></p>
-            <p><strong>Email:</strong> <span th:text="${usuario.email}"></span></p>
-
-        </div>
-
-        <div class="card-footer">
-            <a href="/chamados" class="btn btn-secondary">Voltar</a>
-        </div>
-
-    </div>
-
-</div>
+    </main>
 
 </body>
 </html>
