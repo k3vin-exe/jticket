@@ -36,6 +36,11 @@ public class AuthController {
         return "login";
     }
 
+    @GetMapping("/register")
+    public String registerPage() {
+        return "register";
+    }
+
     @PostMapping("/login")
     public String login(
                 @RequestParam String email,
@@ -64,18 +69,27 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterUserResponse> register(@Valid @RequestBody RegisterUserRequest request) {
+    public String register(
+            @RequestParam String nome,
+            @RequestParam String email,
+            @RequestParam String senha,
+            @RequestParam String cargo,
+            @RequestParam String telefone,
+            @RequestParam String tipo_usuario
+    ) {
+
         User newUser = new User();
 
-        newUser.setSenha(passwordEncoder.encode(request.senha()));
-        newUser.setNome(request.nome());
-        newUser.setEmail(request.email());
-        newUser.setCargo(request.cargo());
-        newUser.setTelefone(request.telefone());
-        newUser.setTipo_usuario(request.tipo_usuario());
+        newUser.setNome(nome);
+        newUser.setEmail(email);
+        newUser.setSenha(passwordEncoder.encode(senha));
+        newUser.setCargo(cargo);
+        newUser.setTelefone(telefone);
+        newUser.setTipo_usuario(tipo_usuario);
 
         userRepository.save(newUser);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterUserResponse(newUser.getNome(), newUser.getEmail()));
+        return "redirect:/auth/login";
     }
+
 }
