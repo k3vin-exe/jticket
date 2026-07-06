@@ -1,4 +1,4 @@
-package dev.kevin.jticket.dto.auth;
+package dev.kevin.jticket.dto.response;
 
 public record LoginResponse(String token) {
 }

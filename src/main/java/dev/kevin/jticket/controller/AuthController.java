@@ -1,10 +1,8 @@
 package dev.kevin.jticket.controller;
 
 import dev.kevin.jticket.config.TokenConfig;
-import dev.kevin.jticket.dto.auth.LoginRequest;
-import dev.kevin.jticket.dto.auth.RegisterUserRequest;
-import dev.kevin.jticket.dto.auth.LoginResponse;
-import dev.kevin.jticket.dto.auth.RegisterUserResponse;
+import dev.kevin.jticket.dto.request.RegisterUserRequest;
+import dev.kevin.jticket.dto.response.RegisterUserResponse;
 import dev.kevin.jticket.entity.User;
 import dev.kevin.jticket.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;

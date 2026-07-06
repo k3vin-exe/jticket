@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>Detalhes do Chamado</title>
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar navbar-dark bg-dark">
+            <div class="container-md">
+                <a href="#" class="navbar-brand">
+                    <img th:src="@{/jticketLogo.png}" alt="Logo" style="height: 60px;">
+                </a>
+                <div class="dropdown">
+                    <a style="color: white;" class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        Usuário
+                    </a>
+        
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="/perfil">Ver meu perfil</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <form method="post" action="/logout">
+                                <button class="dropdown-item">Sair</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container mt-4">
+        
+            <div class="card">
+        
+                <div class="card-header">
+                    <h3 th:text="${chamado.titulo}"></h3>
+                </div>
+        
+                <div class="card-body">
+        
+                    <div class="mb-3">
+                        <strong>Descrição</strong>
+        
+                        <div class="border rounded p-3 mt-2"
+                            th:text="${chamado.descricao}">
+                        </div>
+                    </div>
+        
+                    <div class="row">
+        
+                        <div class="col-md-3">
+                            <strong>Prioridade</strong>
+        
+                            <p th:text="${chamado.prioridade}"></p>
+                        </div>
+        
+                        <div class="col-md-3">
+                            <strong>Status</strong>
+        
+                            <p th:text="${chamado.status}"></p>
+                        </div>
+        
+                        <div class="col-md-3">
+                            <strong>Categoria</strong>
+        
+                            <p th:text="${chamado.categoria}"></p>
+                        </div>
+        
+                        <div class="col-md-3">
+                            <strong>Abertura</strong>
+        
+                            <p th:text="${#temporals.format(chamado.dataAbertura,'dd/MM/yyyy HH:mm')}"></p>
+                        </div>
+        
+                    </div>
+        
+                    <div class="row" th:if="${chamado.dataFechamento != null}">
+        
+                        <div class="col-md-4">
+                            <strong>Fechamento</strong>
+        
+                            <p th:text="${#temporals.format(chamado.dataFechamento,'dd/MM/yyyy HH:mm')}"></p>
+                        </div>
+        
+                    </div>
+        
+                    <hr>
+        
+                    <div class="d-flex gap-2">
+        
+                        <a th:href="@{/chamados/editar/{id}(id=${chamado.id})}"
+                        class="btn btn-warning">
+                            Editar
+                        </a>
+        
+                        <a th:href="@{/chamados}"
+                        class="btn btn-secondary">
+                            Voltar
+                        </a>
+        
+                    </div>
+        
+                </div>
+        
+            </div>
+        
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
