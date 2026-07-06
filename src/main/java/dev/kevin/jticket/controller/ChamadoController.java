@@ -79,6 +79,8 @@ public class ChamadoController {
     @PostMapping("/deletar/{id}")
     public String deletar(@PathVariable Long id) {
 
+        System.out.println("DELETANDO " + id);
+
         service.deletar(id);
 
         return "redirect:/chamados";

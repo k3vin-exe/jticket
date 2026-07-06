@@ -59,6 +59,8 @@ public class ChamadoService {
     }
 
     public void deletar(Long id) {
+        System.out.println("Repository delete " + id);
+
         repository.deleteById(id);
     }
 
