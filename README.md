@@ -42,7 +42,7 @@ https://github.com/k3vin-exe/jticket
 
 ## Execução
 
-Crie o banco de dados MySQL chamado com o nome jticket, conforme `application.properties`.
+Crie o banco de dados MySQL com o nome jticket, conforme `application.properties`.
 
 ```SQL
 CREATE DATABASE jticket;
